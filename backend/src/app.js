@@ -14,6 +14,9 @@ const { errorHandler, notFoundHandler } = require('./middleware/errorMiddleware'
 
 const app = express();
 
+// Trust reverse proxy (e.g. Render, Vercel, Heroku) for accurate IP resolution in rate limiting
+app.set('trust proxy', 1);
+
 // Security HTTP headers
 app.use(helmet());
 
