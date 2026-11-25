@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/authRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const docsRoutes = require('./routes/docsRoutes');
 
 // Middlewares
 const { errorHandler, notFoundHandler } = require('./middleware/errorMiddleware');
@@ -55,6 +56,13 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     service: 'SupportDesk API',
   });
+});
+
+// Interactive API Documentation & Service Directory
+app.use('/docs', docsRoutes);
+app.use('/api/docs', docsRoutes);
+app.get('/', (req, res) => {
+  res.redirect('/docs');
 });
 
 // API Routes
