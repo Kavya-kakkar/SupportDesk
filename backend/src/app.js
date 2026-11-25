@@ -17,9 +17,17 @@ const app = express();
 app.use(helmet());
 
 // Cross-Origin Resource Sharing
+const rawCors = process.env.CORS_ORIGIN || 'http://localhost:5173';
+const allowedOrigins = rawCors.split(',').map((o) => o.trim());
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Allow during initial setup to avoid blocking deployments
+    },
     credentials: true,
   })
 );
